@@ -1,0 +1,41 @@
+---
+import { ClientRouter } from "astro:transitions";
+import "@/styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+}
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const {
+  title = SITE_TITLE,
+  description = ABOUT_ME,
+  image = "/image.jpg",
+} = Astro.props;
+import HeroImage from "@/hero.png";
+import { ABOUT_ME, SITE_TITLE } from "@/consts";
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" type="image/svg+xml" href="https://emoji-route.deno.dev/svg/👩‍💻" />
+<meta name="generator" content={Astro.generator} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<!-- Font preloads -->
+<link
+  rel="preload"
+  href="/fonts/VCRosdNEUE.ttf"
+  as="font"
+  type="font/ttf"
+  crossorigin
+/>
+
+
+
+<!-- View Transitions  -->
+<ClientRouter />

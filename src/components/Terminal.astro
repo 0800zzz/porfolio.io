@@ -1,0 +1,84 @@
+<div class="terminal-window">
+  <div class="terminal-header">
+    <div class="terminal-buttons">
+      <button class="close" aria-label="Close"></button>
+      <button class="minimize" aria-label="Minimize"></button>
+      <button class="expand" aria-label="Expand"></button>
+    </div>
+    <span class="terminal-title">root@kali:~</span>
+  </div>
+  <div id="terminal-content" class="terminal-body"></div>
+</div>
+
+<style>
+  .terminal-window {
+    background: #0a0a0a;
+    border: 1px solid #00ff88;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 100, 0.2);
+    max-width: 600px;
+    margin: auto;
+    overflow: hidden;
+  }
+  .terminal-header {
+    background: #1a1a1a;
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+  }
+  .terminal-buttons {
+    display: flex;
+    gap: 5px;
+  }
+  .terminal-buttons button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+  }
+  .close { background: #ff5f56; }
+  .minimize { background: #ffbd2e; }
+  .expand { background: #27c93f; }
+  .terminal-title {
+    color: #00ff88;
+    font-family: monospace;
+    flex: 1;
+    text-align: center;
+    font-size: 0.9em;
+  }
+  .terminal-body {
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    color: #00ff88;
+    min-height: 150px;
+    white-space: pre-wrap;
+  }
+  .command {
+    color: white;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    const commands = [
+      "nmap -sV 10.10.154.180",
+      "searchsploit openssh 7.6p1",
+      "hydra -l admin -P rockyou.txt ssh://10.10.154.180"
+    ];
+    const terminal = document.getElementById('terminal-content');
+
+    for (const cmd of commands) {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      let typedCmd = '';
+      for (let char of cmd) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+        typedCmd += char;
+        terminal.innerHTML = `<div>> ${typedCmd}</div>`;
+      }
+      terminal.innerHTML += '<br>';
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+  });
+</script>

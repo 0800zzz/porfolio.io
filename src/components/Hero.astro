@@ -1,0 +1,128 @@
+    ---
+    import { Image } from "astro:assets";
+    import HeroImg from "@/hero.png";
+    import { QUOTE, SITE_TITLE, ABOUT_ME } from "@/consts";
+    ---
+
+    <!-- Sección de Stats THM (se mantiene igual) -->
+    <div class="bg-black/50 p-6 rounded-lg border border-green-400/20 z-20 relative mb-8">
+      <h3 class="text-green-400 font-mono mb-4">// THM Stats</h3>
+      <div class="grid grid-cols-3 gap-4 text-center">
+        <div>
+          <p class="text-3xl font-bold text-white">23</p>
+          <p class="text-xs text-green-400">MÁQUINAS</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">TOP 70%</p>
+          <p class="text-xs text-green-400">RANKING</p>
+        </div>
+        <div>
+          <p class="text-3xl font-bold text-white">0</p>
+          <p class="text-xs text-green-400">CVE</p>
+        </div>
+      </div>
+      <a href="https://tryhackme.com/p/lemix2217" class="mt-4 inline-block text-green-400 hover:underline text-xs font-mono">
+        [VER PERFIL COMPLETO]
+      </a>
+    </div>
+
+    <!-- Hero principal -->
+    <section class="h-screen relative w-full grid grid-cols-1 md:grid-cols-2 gap-4 items-center z-10" id="hero">
+      <div class="grid place-items-center">
+        <div class="text-center -mt-10">
+          <h1 class="font-bold text-7xl">{`<${SITE_TITLE} />`}</h1>
+          <h2 class="text-2xl opacity-95 terminal-text" id="typing-subtitle">
+            {/* El texto se insertará mediante JS */}
+          </h2>
+        </div>
+      </div>
+      
+      <div class="relative">
+        <Image
+          alt="Hero"
+          src={HeroImg}
+          class="brightness-200 w-full scale-90 invert"
+        />
+        <!-- Efecto de scanline sutil solo en la imagen -->
+        <div class="hero-scanline"></div>
+      </div>
+    </section>
+
+    <!-- Efecto binarios original (versión más sutil) -->
+    <div class="binary-bg absolute bottom-0 left-0 w-full h-10 opacity-5 overflow-hidden z-0">
+      <div class="binary-content font-mono text-xs whitespace-nowrap"></div>
+    </div>
+
+    <style is:global>
+      /* Efecto terminal para el texto */
+      .terminal-text {
+        font-family: 'Courier New', monospace;
+        color: #00ff88;
+        min-height: 1.5em;
+      }
+      
+      /* Scanline para la imagen */
+      .hero-scanline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          to bottom,
+          transparent 0%,
+          rgba(0, 255, 100, 0.03) 50%,
+          transparent 100%
+        );
+        animation: scanline 8s linear infinite;
+        pointer-events: none;
+      }
+      
+      /* Animación del cursor */
+      .blink {
+        animation: blink 1s infinite;
+      }
+      
+      @keyframes scanline {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+      
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
+    </style>
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        // Efecto typing para el subtítulo
+        const subtitleElement = document.getElementById('typing-subtitle');
+        const fullText = "Pentester specialized in offensive security, and passionate about Red Team.";
+        let i = 0;
+        
+        function typeWriter() {
+          if (i < fullText.length) {
+            subtitleElement.innerHTML = fullText.substring(0, i+1) + '<span class="blink">█</span>';
+            i++;
+            setTimeout(typeWriter, 50);
+          } else {
+            // Mantener el cursor parpadeante al final
+            subtitleElement.innerHTML = fullText + '<span class="blink">█</span>';
+          }
+        }
+        
+        // Iniciar el efecto después de 1s para dar tiempo a cargar
+        setTimeout(typeWriter, 1000);
+        
+        // Efecto binarios original (modificado para ser más sutil)
+        const binaryContent = document.querySelector('.binary-content');
+        setInterval(() => {
+          let binaryText = "";
+          for (let i = 0; i < 50; i++) {
+            binaryText += Math.floor(Math.random() * 2);
+          }
+          binaryContent.textContent = binaryText.repeat(10);
+        }, 300);
+      });
+    </script>
