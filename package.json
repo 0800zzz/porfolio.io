@@ -1,14 +1,16 @@
 {
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && touch ./dist/.nojekyll",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "fmt": "prettier . -w",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "devDependencies": {
+    "@astrojs/rss": "^4.0.11",
     "@tailwindcss/typography": "^0.5.16",
+    "astro": "^5.5.6",
     "gh-pages": "^6.3.0",
     "prettier": "^3.4.2",
     "prettier-plugin-astro": "^0.14.1"
