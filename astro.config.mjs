@@ -1,6 +1,8 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
+import tailwind from "@astrojs/tailwind";
+
 export default defineConfig({
-  site: 'https://0800zzz.github.io',
-  base: '/porfolio.io',
-  output: 'static',
+  site: "http://localhost:4321/",
+  integrations: [tailwind()],
+  vite: { server: { port: 4321 } }
 });

@@ -2,21 +2,29 @@
 import { ClientRouter } from "astro:transitions";
 import "@/styles/global.css";
 import { ABOUT_ME, SITE_TITLE } from "@/consts";
-import HeroImage from "@/hero.png";
 
 interface Props { title?: string; description?: string; image?: string; }
 
-const base = import.meta.env.BASE_URL;
-const { title = SITE_TITLE, description = ABOUT_ME, image = HeroImage.src } = Astro.props;
+const base = import.meta.env.BASE_URL; // p.ej. "/porfolio.io/"
+const { title = SITE_TITLE, description = ABOUT_ME, image } = Astro.props;
+
+// Fallback de imagen OG desde /public/hero.png (no usa alias)
+const imageFallback = `${base}hero.png`;
+const imageForMeta = image ?? imageFallback;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = image.startsWith("http")
-  ? image
-  : new URL(image.replace(/^\/+/, ""), new URL(base, Astro.site)).toString();
+const ogImage = imageForMeta.startsWith("http")
+  ? imageForMeta
+  : new URL(imageForMeta.replace(/^\/+/, ""), new URL(base, Astro.site)).toString();
+
+// Ruta ABSOLUTA (con base) para @font-face
+const fontPath = new URL("fonts/VCRosdNEUE.ttf", new URL(base, Astro.site)).pathname;
 ---
+
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="generator" content={Astro.generator} />
+
 <title>{title}</title>
 <meta name="description" content={description} />
 
@@ -24,8 +32,19 @@ const ogImage = image.startsWith("http")
 <link rel="canonical" href={canonicalURL} />
 <link rel="sitemap" href={`${base}sitemap-index.xml`} />
 
-<!-- Ejemplo de fuente pre-cargada en /public/fonts -->
+<!-- Preload de la fuente con BASE_URL -->
 <link rel="preload" href={`${base}fonts/VCRosdNEUE.ttf`} as="font" type="font/ttf" crossorigin />
+
+<!-- Declaración global de la fuente usando la ruta con base -->
+<style is:global define:vars={{ fontPath }}>
+  @font-face {
+    font-family: "VCRosdNEUE";
+    src: url(var(--fontPath)) format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
 
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

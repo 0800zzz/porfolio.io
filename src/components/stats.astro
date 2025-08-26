@@ -1,0 +1,50 @@
+---
+/**
+ * Componente Stats
+ * Props:
+ * - items: Array<{label: string; value: string; hint?: string }>
+ * - linkText?: string
+ * - linkHref?: string
+ */
+type Item = { label: string; value: string; hint?: string };
+interface Props {
+  items?: Item[];
+  linkText?: string;
+  linkHref?: string;
+}
+
+const {
+  items = [
+    { value: "23",      label: "Tryhackme",       hint: "Red team" },
+    { value: "TOP 70%", label: "HTB",             hint: "Red team" },
+    { value: "10+",     label: "CyberDefenders",  hint: "Publicados" },
+  ],
+  linkText = "[VER WRITEUPS]",
+  // 👉 cambiá por el link que quieras: tu blog o tu repo
+  linkHref = "https://github.com/TU-USUARIO/writeups",
+} = Astro.props;
+---
+
+<section class="bg-black/50 border border-green-400/20 rounded-lg py-8 px-4 md:px-8 relative overflow-hidden block mx-auto max-w-5xl">
+  <h3 class="font-mono text-green-400 mb-6 text-left">// CTF & Labs</h3>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center justify-items-center">
+    {items.map((it) => (
+      <div class="select-none">
+        <p class="text-3xl md:text-4xl font-extrabold text-white tracking-wide">{it.value}</p>
+        <p class="text-xs text-green-400 uppercase mt-1">{it.label}</p>
+        {it.hint && <p class="text-[11px] text-white/50 mt-1">{it.hint}</p>}
+      </div>
+    ))}
+  </div>
+
+  <div class="mt-6 text-center">
+    <a href={linkHref} target="_blank" rel="noopener noreferrer"
+      class="inline-block font-mono text-xs text-green-400 hover:underline">
+      {linkText}
+    </a>
+  </div>
+
+  <!-- borde glow sutil -->
+  <div class="pointer-events-none absolute inset-0 ring-1 ring-green-400/10 rounded-lg"></div>
+</section>
