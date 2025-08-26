@@ -1,8 +1,8 @@
 name: Deploy Astro to GitHub Pages
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [main, dev]   # <-- agregá dev
+  workflow_dispatch:git add .github/workflows/deploy.yml
 
 permissions:
   contents: read
