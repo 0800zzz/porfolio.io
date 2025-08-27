@@ -1,40 +1,54 @@
 ---
-import type { CollectionEntry } from "astro:content";
-import FormattedDate from "@/components/Date.astro";
-import Layout from "@/layouts/Layout.astro";
+/** Card compatible con tu diseño, pero blindada para subruta y slugs */
+const BASE: string = import.meta.env.BASE_URL || "/";
+const join = (b: string, p: string) =>
+  `${b.replace(/\/?$/, "/")}${p.replace(/^\//, "")}`;
+const slugOf = (p: any) =>
+  (p?.slug ?? String(p?.id || ""))
+    .replace(/^.*\//, "")
+    .replace(/\.(md|mdx)$/i, "");
 
-type Props = CollectionEntry<"blog">["data"];
+interface Props {
+  href?: string;
+  slug?: string;        // por si la llamás con slug directo
+  title: string;
+  description?: string;
+  excerpt?: string;     // compat con tu código viejo
+  date?: Date | string;
+  tags?: string[];
+  heroImage?: string;
+}
 
-const { title, pubDate, updatedDate, heroImage } = Astro.props;
+const {
+  href,
+  slug,
+  title,
+  description,
+  excerpt,
+  date,
+  tags = [],
+  heroImage
+} = Astro.props;
+
+const finalHref = href ?? (slug ? join(BASE, `blog/${slug}`) : BASE);
+const dateStr = date ? new Date(date).toLocaleDateString("es-AR") : "";
+const desc = description ?? excerpt ?? "";
 ---
 
-<Layout>
-  <article class="pb-10 grid place-items-center grid-cols-1">
-    <div class="w-full grid place-items-center my-10 px-10 overflow-x-hidden">
-      {
-        heroImage && (
-          <img src={heroImage} alt="hero-image" class="rounded-2xl" />
-        )
-      }
+<a href={finalHref} class="group block rounded-lg border border-white/10 bg-white/5 hover:bg-white/[.08] transition p-4 focus:outline-none focus:ring-2 focus:ring-emerald-400/40">
+  {heroImage && (
+    <img class="w-full h-[130px] object-cover rounded-md border border-white/10 mb-2" src={heroImage} alt="" loading="lazy" />
+  )}
+
+  <h3 class="font-mono text-lg text-[color:var(--accent)] group-hover:opacity-90">{title}</h3>
+  {dateStr && <p class="text-xs text-white/50 mt-0.5">{dateStr}</p>}
+  {desc && <p class="text-white/70 mt-2 line-clamp-3">{desc}</p>}
+
+  {tags.length > 0 && (
+    <div class="mt-3 flex flex-wrap gap-2">
+      {tags.map((t) => (
+        <span class="text-[11px] px-2 py-0.5 border border-white/15 rounded-full text-white/70">{t}</span>
+      ))}
     </div>
-    <div
-      class="prose !max-w-[90vw] overflow-x-hidden !break-words brightness-110 prose-img:scale-90 prose-img:rounded-2xl prose-invert prose-hr:border-white prose-hr:bg-white px-4 md:px-0 md:max-w-4xl"
-    >
-      <div>
-        <div>
-          <FormattedDate date={pubDate} />
-          {
-            updatedDate && (
-              <div class="last-updated-on">
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )
-          }
-        </div>
-        <h1>{title}</h1>
-        <hr />
-      </div>
-      <slot />
-    </div>
-  </article>
-</Layout>
+  )}
+</a>

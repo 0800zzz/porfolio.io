@@ -1,15 +1,13 @@
 import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: "content",
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),
-    pubDate: z.coerce.date(),          // acepta string y lo convierte a Date
-    updatedDate: z.coerce.date().optional(),
-    heroImage: z.string().optional(),  // ruta a imagen (public/ o relativa)
-    draft: z.boolean().default(false), // si true, lo podés ocultar en el listado
-    tags: z.array(z.string()).default([]),
+    pubDate: z.coerce.date(),
+    heroImage: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    draft: z.boolean().optional().default(false),
   }),
 });
 

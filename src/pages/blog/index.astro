@@ -1,27 +1,44 @@
 ---
-import { getCollection } from "astro:content";
-import BlogPostCard from "@/components/BlogPostCard.astro";
-import Section from "@/components/Section.astro";
 import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import { getCollection } from "astro:content";
 
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const BASE = import.meta.env.BASE_URL || "/";
+const joinUrl = (...segs: string[]) =>
+  '/' + segs.map(s => String(s ?? '').replace(/^\/+|\/+$/g, '')).filter(Boolean).join('/') + '/';
+
+let posts = await getCollection("blog");
+posts = posts
+  .filter((p) => p?.data?.draft !== true)
+  .sort((a, b) => {
+    const ad = a?.data?.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
+    const bd = b?.data?.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
+    return bd - ad;
+  });
 ---
 
-<Layout title="My Own Blog Posts">
-  <Section title="My Blog Posts">
-    <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
-      {
-        posts.map((post) => (
-          <BlogPostCard
-            slug={post.id}
-            title={post.data.title}
-            excerpt={post.data.description}
-            date={post.data.pubDate}
-          />
-        ))
-      }
-    </div>
+<Layout title="Blog">
+  <Section title="&lt;$ ls blog /&gt;">
+    {posts.length === 0 ? (
+      <p class="text-center text-white/60 font-mono">No hay posts publicados.</p>
+    ) : (
+      <ul class="grid">
+        {posts.map((p) => (
+          <li>
+            <a class="block border border-white/10 rounded-xl p-4 hover:border-white/20"
+               href={joinUrl(BASE, 'blog', p.slug)}>
+              <h3 class="text-lg font-semibold">{p.data.title}</h3>
+              {p.data.description && <p class="text-white/70 mt-1">{p.data.description}</p>}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <style>
+      .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px;max-width:1100px;margin:0 auto;}
+      .grid > *{grid-column:span 6;}
+      @media (max-width: 900px){ .grid > *{ grid-column: span 12; } }
+    </style>
   </Section>
 </Layout>
