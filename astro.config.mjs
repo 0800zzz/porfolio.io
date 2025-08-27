@@ -3,6 +3,6 @@ import tailwind from "@astrojs/tailwind";
 
 export default defineConfig({
   site: "https://0800zzz.github.io",
-  base: "/porfolio.io/",
+  base: "/porfolio.io/",         // 🔴 obligatorio para Pages
   integrations: [tailwind()],
 });
