@@ -3,29 +3,25 @@ import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import BlogPostCard from "@/components/BlogPostCard.astro";
 import Hero from "@/components/Hero.astro";
+import Stats from "@/components/Stats.astro";
+import Terminal from "@/components/Terminal.astro";
+import { KNOWN_TECH, ABOUT_ME } from "@/consts";
 import { getCollection } from "astro:content";
 
-// Cargar posts (si no hay colección, queda vacío)
 let posts: any[] = [];
-try {
-  const col = await getCollection("blog");
-  posts = Array.isArray(col) ? col : [];
-} catch {
-  posts = [];
-}
+try { posts = await getCollection("blog"); } catch { posts = []; }
 posts = posts.sort((a, b) => {
   const ad = a?.data?.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
   const bd = b?.data?.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
   return bd - ad;
 });
 ---
-
 <Layout title="porfolio.io">
-  <Hero
-    title="Emiliano Carrizo"
-    subtitle="Pentesting • Purple Team • Writeups"
-    matrix={true}
-  />
+  <Hero title="Emiliano Carrizo" subtitle="Pentesting • Purple Team • Writeups" matrix={true} />
+
+  <Section id="stats">
+    <Stats />
+  </Section>
 
   <Section title="ls blog">
     {posts.length === 0 ? (
@@ -47,5 +43,28 @@ posts = posts.sort((a, b) => {
         })}
       </div>
     )}
+  </Section>
+
+  <Section id="terminal" title="bin/bash" full_screen={false}>
+    <Terminal />
+  </Section>
+
+  <Section id="skills" title="ls /skill">
+    <div class="flex flex-wrap justify-center gap-3">
+      {KNOWN_TECH.map((x) => (
+        <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur text-sm font-mono flex items-center gap-2">
+          <span class="text-white/90">{x}</span>
+          <span class="inline-block w-4 h-4 rounded-full bg-white/85 text-black grid place-items-center text-[10px]">✓</span>
+        </span>
+      ))}
+    </div>
+  </Section>
+
+  <Section id="about" title="whoami">
+    <div class="w-full grid place-items-center">
+      <div class="max-w-4xl text-xl md:text-lg opacity-90 text-center justify-evenly">
+        <p>{ABOUT_ME}</p>
+      </div>
+    </div>
   </Section>
 </Layout>

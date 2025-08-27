@@ -1,13 +1,12 @@
 ---
 const CMDS = [
   "nmap -sV -sC 10.10.154.180",
-  "hydra -l admin -P rockyou.txt ssh://10.10.154.180", 
+  "hydra -l admin -P rockyou.txt ssh://10.10.154.180",
   "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt",
   "sqlmap -u 'http://target/login.php?id=1' --dbs",
   "curl -I http://10.10.154.180"
 ];
-
-const OUTPUTS = {
+const OUTPUTS: Record<string, string> = {
   "nmap -sV -sC 10.10.154.180": `Nmap scan report for 10.10.154.180
 Host is up (0.23s latency).
 Not shown: 996 filtered ports
@@ -15,159 +14,50 @@ PORT     STATE SERVICE    VERSION
 22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu
 80/tcp   open  http       Apache httpd 2.4.29
 443/tcp  open  ssl/http   Apache httpd 2.4.29
-8080/tcp open  http-proxy
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel`,
-
-  "hydra -l admin -P rockyou.txt ssh://10.10.154.180": `Hydra v9.3 attacking ssh://10.10.154.180:22
-[ATTEMPT] target 10.10.154.180 - login "admin" - pass "123456" - 1 of 14344392
-[ATTEMPT] target 10.10.154.180 - login "admin" - pass "password" - 2 of 14344392
-[SUCCESS] target 10.10.154.180 - login "admin" - pass "admin123" - 47 of 14344392
-[STATUS] attack finished for 10.10.154.180 (valid pair found)
-1 of 1 target successfully completed, 1 valid password found`,
-
-  "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt": `===============================================================
-Gobuster v3.5
-===============================================================
-[+] Url:                     http://target
-[+] Method:                  GET
-[+] Threads:                 10
-[+] Wordlist:                common.txt
-[+] Status codes:            200,204,301,302,307,401,403
-[+] User Agent:              gobuster/3.5
-[+] Timeout:                 10s
-===============================================================
-/admin                (Status: 301) [Size: 312] [--> http://target/admin/]
-/login                (Status: 200) [Size: 1872]
-/uploads              (Status: 301) [Size: 314] [--> http://target/uploads/]
-/config               (Status: 301) [Size: 313] [--> http://target/config/]
-===============================================================`,
-
-  "sqlmap -u 'http://target/login.php?id=1' --dbs": `[*] starting @ 14:32:17 /2024-03-28/
-
-[14:32:17] [INFO] testing connection to the target URL
-[14:32:18] [INFO] checking if the target is protected
-[14:32:19] [INFO] testing for SQL injection on 'id'
-[14:32:21] [CRITICAL] parameter 'id' is vulnerable
-[14:32:22] [INFO] fetching database names
-available databases [5]:
-[*] information_schema
-[*] mysql
-[*] performance_schema
-[*] sys
-[*] webapp_db`,
-
+8080/tcp open  http-proxy`,
+  "hydra -l admin -P rockyou.txt ssh://10.10.154.180": `[SUCCESS] ... user "admin" password "admin123"`,
+  "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt": `/admin (301) /login (200) /uploads (301)`,
+  "sqlmap -u 'http://target/login.php?id=1' --dbs": `[CRITICAL] parameter 'id' vulnerable. Databases: information_schema, mysql, webapp_db`,
   "curl -I http://10.10.154.180": `HTTP/1.1 200 OK
-Date: Thu, 28 Mar 2024 14:32:45 GMT
-Server: Apache/2.4.29 (Ubuntu)
-X-Powered-By: PHP/7.2.24
-Set-Cookie: PHPSESSID=abc123def456; path=/
-Content-Type: text/html; charset=UTF-8
-Connection: keep-alive`
+Server: Apache/2.4.29 (Ubuntu)`
 };
 ---
-
-<div class="mx-auto my-8 w-full max-w-xl">
+<div class="mx-auto my-8 w-full max-w-4xl">
   <div class="rounded-lg border border-emerald-400/50 bg-black/95 shadow-[0_0_15px_rgba(0,255,136,.25)]">
     <pre class="m-0 h-64 overflow-auto p-4 font-mono text-emerald-400 text-xs leading-relaxed" id="terminal-container">
-
+# MARTINAL :: Interactive Pentest Shell
 <span id="terminal-output"></span><span class="cursor" id="terminal-cursor">█</span>
     </pre>
   </div>
 </div>
-
-<style>
-  .cursor { 
-    animation: blink 1s steps(1,end) infinite; 
-    color: #00ff88;
-  }
-  @keyframes blink { 
-    0%, 100% { opacity: 1; } 
-    50% { opacity: 0; } 
-  }
-  pre {
-    scrollbar-width: thin;
-    scrollbar-color: #00ff88 #000;
-  }
-  pre::-webkit-scrollbar {
-    width: 6px;
-  }
-  pre::-webkit-scrollbar-thumb {
-    background: #00ff88;
-    border-radius: 3px;
-  }
-</style>
-
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', () => {
     const output = document.getElementById('terminal-output');
     const cursor = document.getElementById('terminal-cursor');
-    
     if (!output || !cursor) return;
-
-    const CMDS = [
-      "nmap -sV -sC 10.10.154.180",
-      "hydra -l admin -P rockyou.txt ssh://10.10.154.180",
-      "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt",
-      "sqlmap -u 'http://target/login.php?id=1' --dbs",
-      "curl -I http://10.10.154.180"
-    ];
-
-    const OUTPUTS = {
-      "nmap -sV -sC 10.10.154.180": `Nmap scan report for 10.10.154.180\nHost is up (0.23s latency).\nNot shown: 996 filtered ports\nPORT     STATE SERVICE    VERSION\n22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu\n80/tcp   open  http       Apache httpd 2.4.29\n443/tcp  open  ssl/http   Apache httpd 2.4.29\n8080/tcp open  http-proxy\nService Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel`,
-
-      "hydra -l admin -P rockyou.txt ssh://10.10.154.180": `Hydra v9.3 attacking ssh://10.10.154.180:22\n[ATTEMPT] target 10.10.154.180 - login "admin" - pass "123456" - 1 of 14344392\n[ATTEMPT] target 10.10.154.180 - login "admin" - pass "password" - 2 of 14344392\n[SUCCESS] target 10.10.154.180 - login "admin" - pass "admin123" - 47 of 14344392\n[STATUS] attack finished for 10.10.154.180 (valid pair found)\n1 of 1 target successfully completed, 1 valid password found`,
-
-      "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt": `===============================================================\nGobuster v3.5\n===============================================================\n[+] Url:                     http://target\n[+] Method:                  GET\n[+] Threads:                 10\n[+] Wordlist:                common.txt\n[+] Status codes:            200,204,301,302,307,401,403\n[+] User Agent:              gobuster/3.5\n[+] Timeout:                 10s\n===============================================================\n/admin                (Status: 301) [Size: 312]\n/login                (Status: 200) [Size: 1872]\n/uploads              (Status: 301) [Size: 314]\n/config               (Status: 301) [Size: 313]\n===============================================================`,
-
-      "sqlmap -u 'http://target/login.php?id=1' --dbs": `[*] starting @ 14:32:17 /2024-03-28/\n\n[14:32:17] [INFO] testing connection to the target URL\n[14:32:18] [INFO] checking if the target is protected\n[14:32:19] [INFO] testing for SQL injection on 'id'\n[14:32:21] [CRITICAL] parameter 'id' is vulnerable\n[14:32:22] [INFO] fetching database names\navailable databases [5]:\n[*] information_schema\n[*] mysql\n[*] performance_schema\n[*] sys\n[*] webapp_db`,
-
-      "curl -I http://10.10.154.180": `HTTP/1.1 200 OK\nDate: Thu, 28 Mar 2024 14:32:45 GMT\nServer: Apache/2.4.29 (Ubuntu)\nX-Powered-By: PHP/7.2.24\nSet-Cookie: PHPSESSID=abc123def456; path=/\nContent-Type: text/html; charset=UTF-8`
-    };
-
-    let currentCmd = 0;
-    let currentStep = 'typing';
-    let currentText = '';
-    let currentIndex = 0;
-
-    function simulateTerminal() {
-      if (currentStep === 'typing') {
-        // Mostrar comando
-        const cmd = CMDS[currentCmd];
-        output.innerHTML = `$ ${cmd.substring(0, currentIndex)}`;
-        cursor.style.display = 'inline';
-        
-        if (currentIndex < cmd.length) {
-          currentIndex++;
-          setTimeout(simulateTerminal, 50);
-        } else {
-          currentStep = 'output';
-          currentIndex = 0;
-          setTimeout(simulateTerminal, 800);
-        }
-      } else if (currentStep === 'output') {
-        // Mostrar output del comando
-        const cmd = CMDS[currentCmd];
-        const result = OUTPUTS[cmd];
-        const lines = result.split('\n');
-        
-        if (currentIndex < lines.length) {
-          output.innerHTML = `$ ${cmd}\n${lines.slice(0, currentIndex + 1).join('\n')}`;
-          currentIndex++;
-          setTimeout(simulateTerminal, 100);
-        } else {
-          currentStep = 'next';
-          setTimeout(simulateTerminal, 2000);
-        }
+    let iCmd = 0, step = 'typing', idx = 0;
+    function loop(){
+      const cmd = CMDS[iCmd];
+      if (step === 'typing') {
+        output.innerText = `$ ${cmd.substring(0, idx)}`;
+        if (idx < cmd.length) { idx++; setTimeout(loop, 40); }
+        else { step='output'; idx=0; setTimeout(loop, 600); }
+      } else if (step === 'output') {
+        const lines = OUTPUTS[cmd].split('\n');
+        if (idx < lines.length) {
+          output.innerText = `$ ${cmd}\n` + lines.slice(0, idx+1).join('\n');
+          idx++; setTimeout(loop, 80);
+        } else { step='next'; setTimeout(loop, 1600); }
       } else {
-        // Siguiente comando
-        currentCmd = (currentCmd + 1) % CMDS.length;
-        currentStep = 'typing';
-        currentIndex = 0;
-        output.innerHTML = '';
-        setTimeout(simulateTerminal, 500);
+        iCmd = (iCmd + 1) % CMDS.length;
+        step = 'typing'; idx = 0; output.innerText = '';
+        setTimeout(loop, 400);
       }
     }
-
-    setTimeout(simulateTerminal, 1000);
+    setTimeout(loop, 600);
   });
 </script>
+<style>
+.cursor { animation: blink 1s steps(1,end) infinite; color: #00ff88; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+</style>

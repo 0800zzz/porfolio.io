@@ -1,16 +1,18 @@
 ---
-import "@/styles/global.css";
-const { title = "porfolio.io" } = Astro.props;
+import BaseHead from "@/components/BaseHead.astro";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
 ---
-<html lang="es">
+<html lang="es" class="!overflow-x-hidden">
   <head>
-    <meta charset="utf-8" />
-    <title>{title}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <base href={import.meta.env.BASE_URL} />
+    <BaseHead title={title} description={description} />
   </head>
-  <body class="bg-black text-white">
-    <main class="min-h-screen pt-24 px-4">
-      <slot />
-    </main>
+  <body class="bg-black text-white tracking-wide !overflow-x-hidden">
+    <header class="fixed top-0 w-screen z-[9999]"><Navbar /></header>
+    <main class="pt-16 md:pt-20"><slot /></main>
+    <footer class="w-screen bottom-0 overflow-x-hidden"><Footer /></footer>
   </body>
 </html>

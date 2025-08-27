@@ -1,13 +1,9 @@
-import { defineCollection, z } from "astro:content";
+export const SITE_TITLE = "porfolio.io";
+export const SITE_DESCRIPTION = "Pentesting • Purple Team • Writeups";
 
-const blog = defineCollection({
-  type: "content",
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    pubDate: z.coerce.date(),
-    tags: z.array(z.string()).optional(),
-  }),
-});
+export const ABOUT_ME = `Pentester orientado a Red/Purple Team. Me gusta documentar writeups claros y reproducibles.`;
 
-export const collections = { blog };
+export const KNOWN_TECH = [
+  "Linux", "Bash", "Nmap", "Burp Suite", "SQLmap", "Hydra",
+  "Gobuster", "Python", "Docker", "Git"
+];

@@ -1,16 +1,20 @@
 ---
-interface Props { title?: string; className?: string; full_screen?: boolean; }
+interface Props {
+  title?: string;
+  className?: string;
+  full_screen?: boolean;
+}
 const { title, className, full_screen = false } = Astro.props;
 ---
 <section class={`py-10 ${className ?? ""}`}>
   {title && (
-    <h2 class="console-title mb-6">
-      <span class="op">&lt;$</span>
-      <span class="label"> {title} </span>
-      <span class="cl">/&gt;</span>
+    <h2 class="text-center font-mono text-white/90 text-3xl md:text-4xl leading-tight mb-6">
+      <span class="text-white/60">&lt;$</span>
+      <span class="text-white"> {title} </span>
+      <span class="text-white/60">/&gt;</span>
     </h2>
   )}
-  <div class={full_screen ? "w-full" : "max-w-6xl mx-auto"}>
+  <div class={full_screen ? "w-full" : "max-w-6xl mx-auto px-4"}>
     <slot />
   </div>
 </section>
