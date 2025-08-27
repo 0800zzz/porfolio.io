@@ -2,21 +2,17 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import BlogPostCard from "@/components/BlogPostCard.astro";
-
-// Componentes opcionales (si todavía no existen, pegá los stubs de abajo)
 import Hero from "@/components/Hero.astro";
-import Stats from "@/components/Stats.astro";
-import Terminal from "@/components/Terminal.astro";
-
 import { getCollection } from "astro:content";
 
-// Carga posts (si no hay colección, queda vacío sin romper)
+// Cargar posts (si no hay colección, queda vacío)
 let posts: any[] = [];
 try {
   const col = await getCollection("blog");
   posts = Array.isArray(col) ? col : [];
-} catch { posts = []; }
-
+} catch {
+  posts = [];
+}
 posts = posts.sort((a, b) => {
   const ad = a?.data?.pubDate ? new Date(a.data.pubDate).valueOf() : 0;
   const bd = b?.data?.pubDate ? new Date(b.data.pubDate).valueOf() : 0;
@@ -25,25 +21,12 @@ posts = posts.sort((a, b) => {
 ---
 
 <Layout title="porfolio.io">
-  <!-- Hero -->
-  <Section>
-    <Hero />
-  </Section>
+  <Hero
+    title="Emiliano Carrizo"
+    subtitle="Pentesting • Purple Team • Writeups"
+    matrix={true}
+  />
 
-  <!-- Stats -->
-  <Section>
-    <Stats
-      items={[
-        { value: "23", label: "Tryhackme",      hint: "Writeups Red team" },
-        { value: "10", label: "HTB",            hint: "Writeups Red team" },
-        { value: "1",  label: "CyberDefenders", hint: "Writeups Blue team" },
-      ]}
-      linkText="[VER WRITEUPS]"
-      linkHref="https://github.com/0800zzz/Writeups"
-    />
-  </Section>
-
-  <!-- Blog -->
   <Section title="ls blog">
     {posts.length === 0 ? (
       <p class="text-center text-white/60 font-mono">
@@ -64,31 +47,5 @@ posts = posts.sort((a, b) => {
         })}
       </div>
     )}
-  </Section>
-
-  <!-- Terminal -->
-  <Section title="bin/bash" full_screen={false}>
-    <Terminal />
-  </Section>
-
-  <!-- Skills (placeholder simple; cambiá por tu componente si tenías uno) -->
-  <Section title="ls /skill">
-    <div class="flex flex-wrap justify-center gap-3">
-      {["nmap","hydra","gobuster","sqlmap","burp"].map((x) => (
-        <span class="px-3 py-1 rounded-full bg-white/10 border border-white/20 backdrop-blur text-sm font-mono flex items-center gap-2">
-          <span class="text-white/90">{x}</span>
-          <span class="inline-block w-4 h-4 rounded-full bg-white/85 text-black grid place-items-center text-[10px]">✓</span>
-        </span>
-      ))}
-    </div>
-  </Section>
-
-  <!-- About (placeholder; cambiá el texto) -->
-  <Section title="whoami">
-    <div class="w-full grid place-items-center">
-      <div class="max-w-4xl text-xl md:text-lg opacity-90 text-center">
-        <p>Ofensiva, low-noise, foco en TTPs reales. Writeups y laboratorio.</p>
-      </div>
-    </div>
   </Section>
 </Layout>
