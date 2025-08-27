@@ -3,7 +3,7 @@ title: "Hack The Box - Reddish"
 description: "Obtener acceso root en un entorno multi-contenedor que incluye Redis, Node-RED y Rsync."
 pubDate: 2025-08-26
 draft: false
-useMdTitle: true
+tags: ["Chisel ", "Reverse shell","Cron", "PHP","Socat"]
 ---
 **IP:** `10.10.10.94`  
 **OS:** Linux (multi-container environment)  
@@ -19,7 +19,7 @@ Devuelve una estructura de flujo que sugiere acceso a **Node-RED** con ejecució
 
 ---
 
-## 🐚 Acceso Inicial 
+## 🦈 Acceso Inicial 
 - Se usa el flujo de Node-RED para ejecutar una reverse shell apuntando a nuestro listener.
 - Dentro del contenedor, se observan dos interfaces de red: `172.18.0.2` y `172.19.0.4`.
 

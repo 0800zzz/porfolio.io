@@ -2,6 +2,7 @@
 title: "Purple Team Lab - Recon Detection con Wazuh"
 description: "Simulación de escaneo web (fuzzing con curl/wfuzz) y correlación en Wazuh SIEM mapeado a MITRE ATT&CK."
 pubDate: 2025-08-26
+tags: ["Wazuh ", "Apache", "Fuzzing"]
 draft: false
 ---
 
@@ -13,7 +14,7 @@ draft: false
 
 ---
 
-## Reconocimiento Web
+## 🌐 Reconocimiento Web
 
 Ataque con `curl` simulando fuzzing de directorios:
 
@@ -31,15 +32,12 @@ done
 
 ***MITRE ATT&CK**: **T1595.002** – Active Scanning (Reconnaissance)*
 
-### Escenario
-- Dataset de red + logs Apache entregados por **CyberDefenders**.  
-- Simulación de ataque de reconocimiento, subida de webshell y explotación.  
+***Regla de Wazuh***: Multiple web server 400/404 error codes.
 
-### Hallazgos
-- **IP atacante identificada** a través de Wireshark.  
-- **Evidencia de webshell:** archivo malicioso `image.jpg.php` subido en `/reviews/uploads/`.  
-- **Reconstrucción cronológica** de los eventos (fuzzing → upload → ejecución).  
-- **Dificultad:** geolocalización de IP y extracción de credenciales.  
+ ***Resultado***: Wazuh marcó actividad sospechosa → Reconnaissance. 
 
-### Evidencia
+### 🎯 Evidencia
+
+![Evidencia](../../../public/fonts/fuzzing-purple.png)
+
 

