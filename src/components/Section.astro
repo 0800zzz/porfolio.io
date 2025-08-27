@@ -1,12 +1,8 @@
 ---
-interface Props {
-  title?: string;
-  className?: string;
-  full_screen?: boolean;
-}
-const { title, className, full_screen = false } = Astro.props;
+interface Props { title?: string; className?: string; full_screen?: boolean; id?: string }
+const { title, className, full_screen = false, id } = Astro.props;
 ---
-<section class={`py-10 ${className ?? ""}`}>
+<section id={id} class={`py-10 scroll-mt-20 ${className ?? ""}`}>
   {title && (
     <h2 class="text-center font-mono text-white/90 text-3xl md:text-4xl leading-tight mb-6">
       <span class="text-white/60">&lt;$</span>

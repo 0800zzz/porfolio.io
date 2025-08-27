@@ -2,21 +2,21 @@
 interface Props { title?: string; subtitle?: string; matrix?: boolean; }
 const { title = "Emiliano Carrizo", subtitle = "Pentesting • Purple Team • Writeups", matrix = true } = Astro.props;
 ---
-<section class="relative isolate min-h-[42vh] md:min-h-[56vh] grid place-items-center overflow-hidden">
+<section class="relative isolate min-h-[44vh] md:min-h-[58vh] grid place-items-center overflow-hidden">
   {matrix && (
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0 opacity-[0.08]">
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,136,.12)_0%,transparent_60%)]"></div>
-      <div class="absolute inset-0 animate-[fall_9s_linear_infinite] [mask-image:linear-gradient(#000,transparent)]">
-        <div class="absolute inset-0 text-[14px] leading-[1.2] font-mono text-emerald-500/80 select-none">
-          {Array.from({ length: 40 }).map((_, i) => (
-            <div class="absolute" style={`left:${(i*2.5)%100}%; top:-10%;`}>
-              {Array.from({ length: 40 }).map(() => <div>01</div>)}
-            </div>
-          ))}
-        </div>
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,136,.12)_0%,transparent_65%)]"></div>
+      <div class="absolute inset-0 opacity-[0.10] [mask-image:linear-gradient(#000,transparent_85%)]">
+        {Array.from({ length: 48 }).map((_, col) => (
+          <div class="absolute text-[14px] leading-[1.1] font-mono text-emerald-500/90 select-none animate-fall"
+               style={`left:${(col*2.2)%100}%; animation-duration:${6 + (col%6)}s; animation-delay:${(col%5)*-0.9}s;`}>
+            {Array.from({ length: 64 }).map(() => <div>01</div>)}
+          </div>
+        ))}
       </div>
     </div>
   )}
+
   <div class="relative z-10 text-center px-6">
     <h1 class="font-mono text-4xl md:text-6xl font-extrabold text-emerald-400 tracking-wide drop-shadow-[0_0_20px_rgba(0,255,136,.25)]">
       {title}
@@ -24,4 +24,8 @@ const { title = "Emiliano Carrizo", subtitle = "Pentesting • Purple Team • W
     <p class="mt-4 text-white/85 font-mono text-base md:text-lg">{subtitle}</p>
   </div>
 </section>
-<style>@keyframes fall{0%{transform:translateY(-10%)}100%{transform:translateY(110%)}}</style>
+
+<style>
+@keyframes fall { 0% { transform: translateY(-100%);} 100% { transform: translateY(110%);} }
+.animate-fall { animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+</style>

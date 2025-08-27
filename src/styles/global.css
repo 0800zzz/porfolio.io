@@ -12,3 +12,5 @@ body, pre, code { font-family: var(--font-mono-custom); }
 .console-title { text-align:center; font-family: var(--font-mono-custom); font-size: 1.875rem; line-height: 2.25rem; color: rgba(255,255,255,.9); }
 .console-title .op,.console-title .cl { color: rgba(255,255,255,.6); }
 .console-title .label { color: #fff; }
+
+html { scroll-behavior: smooth; }

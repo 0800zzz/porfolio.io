@@ -1,18 +1,35 @@
 ---
-import BaseHead from "@/components/BaseHead.astro";
+import "@/styles/global.css";
 import Navbar from "@/components/Navbar.astro";
 import Footer from "@/components/Footer.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = "porfolio.io", description = "Portfolio" } = Astro.props;
 ---
+
 <html lang="es" class="!overflow-x-hidden">
   <head>
-    <base href={import.meta.env.BASE_URL} />
-    <BaseHead title={title} description={description} />
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
   </head>
   <body class="bg-black text-white tracking-wide !overflow-x-hidden">
-    <header class="fixed top-0 w-screen z-[9999]"><Navbar /></header>
-    <main class="pt-16 md:pt-20"><slot /></main>
-    <footer class="w-screen bottom-0 overflow-x-hidden"><Footer /></footer>
+    <!-- Navbar fija -->
+    <header class="fixed top-0 left-0 right-0 z-[1000]">
+      <Navbar />
+    </header>
+
+    <!-- padding-top para que no tape el contenido (h-14 = 56px) -->
+    <main class="pt-16">
+      <slot />
+    </main>
+
+    <footer class="mt-10">
+      <Footer />
+    </footer>
   </body>
 </html>
