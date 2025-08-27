@@ -1,4 +1,4 @@
-name: Deploy Astro to GitHub Pages
+name: Deploy Astro via GitHub Actions (Pages)
 
 on:
   push:
@@ -18,14 +18,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
+          # SIN cache para evitar fallo por falta de package-lock.json
+
+      - name: 📦 Install deps
+        run: npm ci || npm i
+
+      - name: 🏗️ Build
+        run: npm run build
+
+      - name: 👀 List dist (debug)
+        run: |
+          echo "== dist =="
+          ls -la dist || true
+          echo "== dist/blog =="
+          ls -la dist/blog || true
+          echo "== dist/_astro =="
+          ls -la dist/_astro || true
+
+      - name: 📤 Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
@@ -36,5 +54,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
