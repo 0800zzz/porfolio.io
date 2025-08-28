@@ -8,10 +8,9 @@ import Terminal from "@/components/Terminal.astro";
 import { KNOWN_TECH, ABOUT_ME } from "@/consts";
 import { getCollection } from "astro:content";
 
-// Base real para subruta
 const BASE: string = import.meta.env.BASE_URL || "/";
 
-// join seguro: une segmentos y **SIEMPRE** termina en "/"
+// join seguro: une segmentos y SIEMPRE termina en "/"
 const join = (...segs: string[]) =>
   "/" + segs
     .map(s => String(s ?? "").replace(/^\/+|\/+$/g, ""))
@@ -30,7 +29,6 @@ posts = posts
     return bd - ad;
   });
 
-// limitar cantidad de posts a mostrar
 const LIMIT = 6;
 const latest = posts.slice(0, LIMIT);
 ---
@@ -44,7 +42,7 @@ const latest = posts.slice(0, LIMIT);
   </Section>
 
   <!-- Blog -->
-  <Section title="ls blog">
+  <Section id="blog" title="ls blog">
     {latest.length === 0 ? (
       <p class="text-center text-white/60 font-mono">Sin entradas aún.</p>
     ) : (
@@ -54,7 +52,7 @@ const latest = posts.slice(0, LIMIT);
             <BlogPostCard
               href={join(BASE, "blog", p.slug ?? (p.id.split("/").pop() || ""))}
               title={p.data.title}
-              description={p.data.description}  /* mantiene tu prop */
+              description={p.data.description}
               date={p.data.pubDate}
               tags={p.data.tags}
               heroImage={p.data.heroImage}
@@ -75,7 +73,7 @@ const latest = posts.slice(0, LIMIT);
   </Section>
 
   <!-- Terminal -->
-  <Section id title="bin/bash" full_screen={false}>
+  <Section id="terminal" title="bin/bash" full_screen={false}>
     <Terminal />
   </Section>
 
