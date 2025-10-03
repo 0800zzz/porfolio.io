@@ -1,5 +1,5 @@
 ---
-title: "Strutted (HTB)"
+title: "Hack The Box - Strutted"
 description: "Walkthrough con enumeración, explotación y privesc."
 pubDate: "2025-08-20"   # YYYY-MM-DD (en comillas)
 tags: ["htb", "linux", "walkthrough"]
