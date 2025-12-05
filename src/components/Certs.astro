@@ -1,0 +1,68 @@
+<section class="certs">
+  <h2 class="text-center font-mono text-emerald-300 text-2xl mb-6">
+    <certs />
+  </h2>
+
+  <div class="cert-grid">
+
+    <div class="cert-card">
+      <img src="/public/fonts/badges/ethical-hacker.png" alt="Cisco Ethical Hacker" />
+      <p class="text-center font-mono text-sm opacity-60 mt-2">
+  Verificación disponible en Credly bajo solicitud.
+</p>
+      <p class="label">Cisco • Ethical Hacker</p>
+    </div>
+
+    <div class="cert-card">
+      <img src="/public/fonts/badges/junior-cybersecurity-analyst-career-path.1.png" alt="Cisco Cybersecurity Analyst" />
+      <p class="text-center font-mono text-sm opacity-60 mt-2">
+  Verificación disponible en Credly bajo solicitud.
+</p>
+      <p class="label">Cisco • Cybersecurity Analyst Jr</p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .certs {
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .cert-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+.cert-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(16, 255, 130, 0.3);
+  border-radius: 12px;
+  padding: 1.4rem 2rem; 
+  width: 245px; 
+  text-align: center;
+  transition: 0.18s ease;
+}
+
+
+  .cert-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(16, 255, 130, 0.4);
+  }
+
+  img {
+    width: 110px; /* tamaño perfecto para 600px sin pixelado */
+    margin: 0 auto 0.8rem auto;
+    display: block;
+  }
+
+  .label {
+    margin-top: 0.4rem;
+    font-family: monospace;
+    font-size: 0.9rem;
+    opacity: 0.85;
+  }
+</style>
