@@ -1,5 +1,6 @@
 ---
 title: "TryHackMe - Internal"
+description: "Explotación completa de un WordPress vulnerable mediante WPScan y reverse shell en plantilla 404, pivoting con túnel SSH para acceder a Jenkins, fuerza bruta con Hydra y obtención del panel administrador. Culmina con extracción de credenciales internas y escalada directa a root."
 pubDate: 2025-08-26
 draft: false
 tags: ["Wpscan ", "Hydra", "PHP"]

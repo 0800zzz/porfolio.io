@@ -1,5 +1,6 @@
 ---
 title: "TryHackMe - Overpass"
+description: "bypass del login mediante cookie manual, obtención y crackeo de la clave SSH de james, y escalada a root aprovechando un cronjob que ejecuta un script remoto. Incluye montaje de servidor falso, manipulación de /etc/hosts y entrega de payload para acceso total."
 pubDate: 2025-12-05
 draft: false
 tags: ["WFuzz", "SSH", "Cron", "Reverse Shell"]
