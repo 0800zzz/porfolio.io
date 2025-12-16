@@ -1,24 +1,48 @@
 <section class="certs">
-  <h2 class="text-center font-mono text-emerald-300 text-2xl mb-6">
+  <h2 class="text-center font-mono text-emerald-300 text-2xl mb-8">
     <certs />
   </h2>
 
   <div class="cert-grid">
 
+    <!-- Cisco Ethical Hacker -->
     <div class="cert-card">
-<img src={`${import.meta.env.BASE_URL}badges/ethical-hacker.png`} />
-      <p class="text-center font-mono text-sm opacity-60 mt-2">
-  Verificación disponible en Credly bajo solicitud.
-</p>
-      <p class="label">Cisco • Ethical Hacker</p>
+      <img
+        src={`${import.meta.env.BASE_URL}badges/ethical-hacker.png`}
+        alt="Cisco Ethical Hacker"
+      />
+
+      <p class="label">
+        Cisco • Ethical Hacker
+      </p>
+
+      <p class="desc">
+        fundamentos ofensivos · web · enumeración · privesc
+      </p>
+
+      <p class="verify">
+        verificación disponible en credly bajo solicitud
+      </p>
     </div>
 
+    <!-- Cisco Cybersecurity Analyst Jr -->
     <div class="cert-card">
-<img src={`${import.meta.env.BASE_URL}badges/junior-cybersecurity-analyst-career-path.1.png`} />
-      <p class="text-center font-mono text-sm opacity-60 mt-2">
-  Verificación disponible en Credly bajo solicitud.
-</p>
-      <p class="label">Cisco • Cybersecurity Analyst Jr</p>
+      <img
+        src={`${import.meta.env.BASE_URL}badges/junior-cybersecurity-analyst-career-path.1.png`}
+        alt="Cisco Cybersecurity Analyst Jr"
+      />
+
+      <p class="label">
+        Cisco • Cybersecurity Analyst Jr
+      </p>
+
+      <p class="desc">
+        soc · detección · análisis de incidentes · blue team
+      </p>
+
+      <p class="verify">
+        verificación disponible en credly bajo solicitud
+      </p>
     </div>
 
   </div>
@@ -37,32 +61,46 @@
     flex-wrap: wrap;
   }
 
-.cert-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(16, 255, 130, 0.3);
-  border-radius: 12px;
-  padding: 1.4rem 2rem; 
-  width: 245px; 
-  text-align: center;
-  transition: 0.18s ease;
-}
-
+  .cert-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(16, 255, 130, 0.3);
+    border-radius: 14px;
+    padding: 1.6rem 2rem;
+    width: 260px;
+    text-align: center;
+    transition: 0.18s ease;
+  }
 
   .cert-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 12px rgba(16, 255, 130, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 0 14px rgba(16, 255, 130, 0.35);
   }
 
   img {
-    width: 110px; /* tamaño perfecto para 600px sin pixelado */
-    margin: 0 auto 0.8rem auto;
+    width: 110px;
+    margin: 0 auto 0.9rem auto;
     display: block;
   }
 
   .label {
+    margin-top: 0.3rem;
+    font-family: monospace;
+    font-size: 0.95rem;
+    opacity: 0.9;
+  }
+
+  .desc {
     margin-top: 0.4rem;
     font-family: monospace;
-    font-size: 0.9rem;
-    opacity: 0.85;
+    font-size: 0.75rem;
+    opacity: 0.65;
+    line-height: 1.4;
+  }
+
+  .verify {
+    margin-top: 0.6rem;
+    font-family: monospace;
+    font-size: 0.7rem;
+    opacity: 0.5;
   }
 </style>

@@ -1,16 +1,40 @@
 ---
-interface Props { title?: string; subtitle?: string; matrix?: boolean; }
-const { title = "Emiliano Carrizo", subtitle = "Pentesting • Purple Team • Writeups", matrix = true } = Astro.props;
+interface Props {
+  title?: string;
+  subtitle?: string;
+  matrix?: boolean;
+}
+
+const {
+  title = "Emiliano Carrizo",
+  subtitle = "Pentesting · SOC · Purple Team · Writeups",
+  matrix = true
+} = Astro.props;
+
+// join local (evita dependencias implícitas)
+const join = (...segs: string[]) =>
+  "/" +
+  segs
+    .map(s => String(s ?? "").replace(/^\/+|\/+$/g, ""))
+    .filter(Boolean)
+    .join("/") +
+  "/";
 ---
-<section class="relative isolate min-h-[44vh] md:min-h-[58vh] grid place-items-center overflow-hidden">
+
+<section class="relative isolate min-h-[42vh] md:min-h-[56vh] grid place-items-center overflow-hidden">
   {matrix && (
     <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,136,.12)_0%,transparent_65%)]"></div>
-      <div class="absolute inset-0 opacity-[0.10] [mask-image:linear-gradient(#000,transparent_85%)]">
-        {Array.from({ length: 48 }).map((_, col) => (
-          <div class="absolute text-[14px] leading-[1.1] font-mono text-emerald-500/90 select-none animate-fall"
-               style={`left:${(col*2.2)%100}%; animation-duration:${6 + (col%6)}s; animation-delay:${(col%5)*-0.9}s;`}>
-            {Array.from({ length: 64 }).map(() => <div>01</div>)}
+      <!-- glow radial suave -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,255,136,.08)_0%,transparent_70%)]"></div>
+
+      <!-- matrix muy sutil -->
+      <div class="absolute inset-0 opacity-[0.07] [mask-image:linear-gradient(#000,transparent_85%)]">
+        {Array.from({ length: 40 }).map((_, col) => (
+          <div
+            class="absolute text-[13px] leading-[1.1] font-mono text-emerald-500/80 select-none animate-fall"
+            style={`left:${(col * 2.5) % 100}%; animation-duration:${7 + (col % 5)}s; animation-delay:${(col % 6) * -1}s;`}
+          >
+            {Array.from({ length: 56 }).map(() => <div>01</div>)}
           </div>
         ))}
       </div>
@@ -18,14 +42,47 @@ const { title = "Emiliano Carrizo", subtitle = "Pentesting • Purple Team • W
   )}
 
   <div class="relative z-10 text-center px-6">
-    <h1 class="font-mono text-4xl md:text-6xl font-extrabold text-emerald-400 tracking-wide drop-shadow-[0_0_20px_rgba(0,255,136,.25)]">
+    <h1 class="font-mono text-4xl md:text-6xl font-extrabold tracking-wide text-emerald-400">
       {title}
     </h1>
-    <p class="mt-4 text-white/85 font-mono text-base md:text-lg">{subtitle}</p>
+
+    <p class="mt-4 font-mono text-sm md:text-base text-white/80 max-w-xl mx-auto">
+      {subtitle}
+    </p>
+
+    <!-- CTA -->
+    <div class="mt-6 flex items-center justify-center gap-6 font-mono text-sm">
+  <a
+  href={`${import.meta.env.BASE_URL}blog/`}
+  aria-label="View writeups"
+  class="text-emerald-400 hover:text-emerald-300 transition-colors font-semibold"
+>
+  view writeups
+</a>
+
+      <span class="text-white/30">|</span>
+
+<a
+  href={`${import.meta.env.BASE_URL}cv/cv.pdf`}
+  download
+  class="text-emerald-400/90 hover:text-emerald-300 transition-colors"
+>
+  download cv
+</a>
+
+    </div>
   </div>
 </section>
 
 <style>
-@keyframes fall { 0% { transform: translateY(-100%);} 100% { transform: translateY(110%);} }
-.animate-fall { animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+@keyframes fall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(110%); }
+}
+
+.animate-fall {
+  animation-name: fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 </style>

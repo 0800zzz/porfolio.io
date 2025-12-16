@@ -3,13 +3,14 @@ title: "TryHackMe - Mr. Robot"
 description: "Enumeración web, exposición vía robots.txt, credenciales en Base64, acceso a WordPress, reverse shell mediante Theme Editor y escalada de privilegios con nmap legacy --interactive."
 pubDate: "2025-12-12"
 draft: false
+difficulty: insane
 tags: ["htb", "linux", "wordpress", "web", "enumeration", "suid", "privesc"]
 
 ---
 
 **IP:** `10.66.131.162`  
 **OS:** Linux  
-**Dificultad:** Medium 
+
 
 ---
 
@@ -143,7 +144,7 @@ Archivos sensibles:
 - `password.raw-md5`
 
 Hash encontrado:
-```text
+```text 
 c3fcd3d76192e4007dfb496cca67e13b
 ```
 

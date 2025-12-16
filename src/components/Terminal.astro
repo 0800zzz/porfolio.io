@@ -1,73 +1,73 @@
----
-// Nada en el frontmatter. Todo el JS vive del lado cliente.
----
 <div class="mx-auto my-8 w-full max-w-4xl">
-  <div class="rounded-lg border border-emerald-400/50 bg-black/95 shadow-[0_0_15px_rgba(0,255,136,.25)]">
-    <pre class="m-0 h-64 overflow-auto p-4 font-mono text-emerald-400 text-xs leading-relaxed" id="terminal-pre">
-<span id="terminal-output"></span><span class="cursor" id="terminal-cursor">█</span>
-    </pre>
+  <p class="mb-2 font-mono text-xs text-emerald-400/60">
+    simulated terminal output
+  </p>
+
+  <div
+    class="rounded-lg border border-emerald-400/30 bg-black/95 transition-shadow duration-300 hover:shadow-[0_0_12px_rgba(0,255,136,.25)]"
+  >
+    <pre
+      class="m-0 h-64 overflow-auto p-4 font-mono text-[13px] leading-relaxed text-emerald-400"
+      id="terminal-pre"
+    ><span id="terminal-output"></span><span class="cursor" id="terminal-cursor">█</span></pre>
   </div>
 </div>
 
 <style>
-  .cursor { animation: blink 1s steps(1,end) infinite; color: #00ff88; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  #terminal-pre { scrollbar-width: thin; scrollbar-color: #00ff88 #000; }
-  #terminal-pre::-webkit-scrollbar { width: 6px; }
-  #terminal-pre::-webkit-scrollbar-thumb { background: #00ff88; border-radius: 3px; }
+  .cursor {
+    animation: blink 1.2s steps(1, end) infinite;
+    color: #00ff88;
+    opacity: 0.85;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  #terminal-pre {
+    scrollbar-width: thin;
+    scrollbar-color: #00ff88 #000;
+  }
+
+  #terminal-pre::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #terminal-pre::-webkit-scrollbar-thumb {
+    background: #00ff88;
+    border-radius: 3px;
+  }
 </style>
 
 <script is:inline type="module">
-  // Datos 100% del lado cliente (no dependen de Astro/SSR)
+  // comandos sobrios y profesionales (sin ruido innecesario)
   const CMDS = [
     "nmap -sV -sC 10.10.154.180",
-    "hydra -l admin -P rockyou.txt ssh://10.10.154.180",
-    "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt",
-    "sqlmap -u 'http://target/login.php?id=1' --dbs",
+    "gobuster dir -u http://target -w common.txt",
     "curl -I http://10.10.154.180",
   ];
 
   const OUTPUTS = {
     "nmap -sV -sC 10.10.154.180": `Nmap scan report for 10.10.154.180
-Host is up (0.23s latency).
-Not shown: 996 filtered ports
-PORT     STATE SERVICE    VERSION
-22/tcp   open  ssh        OpenSSH 7.6p1 Ubuntu
-80/tcp   open  http       Apache httpd 2.4.29
-443/tcp  open  ssl/http   Apache httpd 2.4.29
-8080/tcp open  http-proxy
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel`,
-    "hydra -l admin -P rockyou.txt ssh://10.10.154.180": `Hydra v9.3 attacking ssh://10.10.154.180:22
-[ATTEMPT] target 10.10.154.180 - login "admin" - pass "123456"
-[ATTEMPT] target 10.10.154.180 - login "admin" - pass "password"
-[SUCCESS] target 10.10.154.180 - login "admin" - pass "admin123"
-[STATUS] attack finished (valid pair found)`,
-    "gobuster dir -u http://target -w /usr/share/wordlists/dirb/common.txt": `===============================================================
-Gobuster v3.5
-===============================================================
-[+] Url: http://target
-[+] Method: GET
-[+] Threads: 10
-[+] Wordlist: common.txt
-[+] Status codes: 200,204,301,302,307,401,403
+Host is up (0.21s latency).
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu
+80/tcp   open  http    Apache httpd 2.4.29
+Service Info: OS: Linux`,
+
+    "gobuster dir -u http://target -w common.txt": `Gobuster v3.5
 ===============================================================
 /admin   (301)
 /login   (200)
 /uploads (301)
-/config  (301)
 ===============================================================`,
-    "sqlmap -u 'http://target/login.php?id=1' --dbs": `[*] starting ...
 
-[INFO] testing connection to the target URL
-[INFO] testing for SQL injection on 'id'
-[CRITICAL] parameter 'id' is vulnerable
-[INFO] fetching database names
-available databases [5]:
-[*] information_schema
-[*] mysql
-[*] performance_schema
-[*] sys
-[*] webapp_db`,
     "curl -I http://10.10.154.180": `HTTP/1.1 200 OK
 Server: Apache/2.4.29 (Ubuntu)
 X-Powered-By: PHP/7.2.24`,
@@ -83,9 +83,10 @@ X-Powered-By: PHP/7.2.24`,
     let i = 0;
 
     const TYPE_DELAY = 35;
-    const LINE_DELAY = 75;
-    const AFTER_CMD_DELAY = 1400;
+    const LINE_DELAY = 70;
+    const AFTER_CMD_DELAY = 1200;
     const BETWEEN_CMD_DELAY = 400;
+    const PAUSE_AFTER_LOOP = 4000;
 
     function tick() {
       const cmd = CMDS[cmdIndex] || "";
@@ -93,40 +94,58 @@ X-Powered-By: PHP/7.2.24`,
       if (mode === "typing") {
         outEl.textContent = `$ ${cmd.slice(0, i)}`;
         i++;
-        if (i <= cmd.length) return void setTimeout(tick, TYPE_DELAY);
+        if (i <= cmd.length) {
+          setTimeout(tick, TYPE_DELAY);
+          return;
+        }
         mode = "output";
         i = 0;
-        return void setTimeout(tick, 500);
+        setTimeout(tick, 400);
+        return;
       }
 
       if (mode === "output") {
         const text = OUTPUTS[cmd] || "";
         const lines = text.split("\n");
-        outEl.textContent = `$ ${cmd}\n` + lines.slice(0, i + 1).join("\n");
+        outEl.textContent =
+          `$ ${cmd}\n` + lines.slice(0, i + 1).join("\n");
         i++;
-        if (i < lines.length) return void setTimeout(tick, LINE_DELAY);
+        if (i < lines.length) {
+          setTimeout(tick, LINE_DELAY);
+          return;
+        }
         mode = "next";
-        return void setTimeout(tick, AFTER_CMD_DELAY);
+        setTimeout(tick, AFTER_CMD_DELAY);
+        return;
       }
 
-      // next
-      cmdIndex = (cmdIndex + 1) % CMDS.length;
+      // next command or pause
+      if (cmdIndex === CMDS.length - 1) {
+        cmdIndex = 0;
+        mode = "typing";
+        i = 0;
+        outEl.textContent = "";
+        setTimeout(tick, PAUSE_AFTER_LOOP);
+        return;
+      }
+
+      cmdIndex++;
       mode = "typing";
       i = 0;
       outEl.textContent = "";
-      return void setTimeout(tick, BETWEEN_CMD_DELAY);
+      setTimeout(tick, BETWEEN_CMD_DELAY);
     }
 
     setTimeout(tick, 400);
   }
 
-  // Soporte para primer load y para astro:transitions si lo usás
   const boot = () => startTerminal();
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot, { once: true });
   } else {
     boot();
   }
-  // Si en algún momento volvés a usar <ClientRouter />, re-dispará tras swap:
+
   window.addEventListener?.("astro:after-swap", boot);
 </script>
